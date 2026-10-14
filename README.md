@@ -131,15 +131,7 @@ Streaming flow summary:
 
 Contributions welcome. For production-readiness PRs consider:
 - docker-compose or Kubernetes manifests
-- example nginx/Traefik configs with LetsEncrypt
-- authentication frontends and token-based access control
 
-This repository currently has no license file. Add a LICENSE to clarify reuse.
 
----
 
-If you want, I can also:
-- add a sample `docker-compose.yml` and `nginx` config
-- add a `systemd` unit example and a minimal `traefik` setup
-- include a rendered PNG of the architecture diagram in the repo
 
