@@ -2,7 +2,17 @@
 
 Production-ready guide for running a self-hosted chat interface backed by vLLM and Streamlit, packaged for NVIDIA GPU Docker deployment.
 
-vllm-nexus provides a minimal, audited example of serving an OpenAI-compatible inference API with vLLM and a lightweight Streamlit web UI that consumes that API. This README focuses on a production-minded deployment and clear architecture (diagram included as text for maximum portability).
+vllm-nexus provides a minimal, audited example of serving an OpenAI-compatible inference API with vLLM and a lightweight Streamlit web UI that consumes that API. This README focuses on a production-ready deployment model for GPU-backed local inference.
+
+---
+
+## Demo
+
+Watch the demo video for this project:
+
+[![Demo video](https://img.youtube.com/vi/9How8H3Dk8Y/maxresdefault.jpg)](https://github.com/KoushikSamudrala/vllm-nexus/issues/1#issue-5845031049)
+
+> The video is linked from the issue where it was uploaded, so it can be viewed directly from the README.
 
 ---
 
@@ -50,7 +60,7 @@ Production notes:
 
 ## Docker Compose (example)
 
-Create a simple `docker-compose.yml` that places nginx in front of the single container or use Traefik for automatic LetsEncrypt. Compose is not included in this repo but recommended for production orchestration.
+Create a simple `docker-compose.yml` that places nginx in front of the single container or use Traefik for automatic LetsEncrypt. Compose is not included in this repo but recommended for production or testing setups.
 
 ---
 
@@ -131,7 +141,3 @@ Streaming flow summary:
 
 Contributions welcome. For production-readiness PRs consider:
 - docker-compose or Kubernetes manifests
-
-
-
-
