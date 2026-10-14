@@ -6,13 +6,13 @@ vllm-nexus provides a minimal, audited example of serving an OpenAI-compatible i
 
 ---
 
-## Demo
 
-Watch the demo video for this project:
 
-[![Demo video](https://img.youtube.com/vi/9How8H3Dk8Y/maxresdefault.jpg)](https://github.com/KoushikSamudrala/vllm-nexus/issues/1#issue-5845031049)
 
-> The video is linked from the issue where it was uploaded, so it can be viewed directly from the README.
+
+
+
+
 
 ---
 
