@@ -6,7 +6,7 @@ vllm-nexus provides a minimal, audited example of serving an OpenAI-compatible i
 
 ---
 
-
+https://github.com/user-attachments/assets/f33984a6-9ea0-4e05-9e55-4f97b743ea3d
 
 
 
