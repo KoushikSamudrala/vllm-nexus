@@ -122,7 +122,7 @@ Set these with `-e` when running the container or export them in your process ma
 
 ## Architecture (portable text diagram)
 
-The mermaid diagram in the previous README may not render on GitHub; below is an ASCII diagram suitable for README.md viewers:
+
 
 ```
 +-------------+           HTTP/WS            +-----------------------------+           +--------------------+
@@ -164,7 +164,7 @@ Streaming flow summary:
 ## Troubleshooting quick tips
 
 - `Server Offline` in UI: from the container, curl http://localhost:8000/health. Confirm vLLM process started.
-- OOM errors: switch to smaller model or lower `GPU_UTIL`.
+- OOM errors: switch to a smaller model or lower `GPU_UTIL`.
 - Long model downloads: pre-pull model weights to a cache or local path used by vLLM.
 
 ---
