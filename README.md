@@ -2,15 +2,11 @@
 
 Production-ready guide for running a self-hosted chat interface backed by vLLM and Streamlit, packaged for NVIDIA GPU Docker deployment.
 
-vllm-nexus provides a minimal, audited example of serving an OpenAI-compatible inference API with vLLM and a lightweight Streamlit web UI that consumes that API. This README focuses on a production-ready deployment model for GPU-backed local inference.
+vllm-nexus provides a minimal, audited example of serving an OpenAI-compatible inference API with vLLM and a lightweight Streamlit web UI that consumes that API. This README focuses on a production-oriented deployment using Docker + NVIDIA GPUs, and includes a dedicated guide for launching on AWS EC2 GPU instances.
 
 ---
 
 https://github.com/user-attachments/assets/f33984a6-9ea0-4e05-9e55-4f97b743ea3d
-
-
-
-
 
 
 
@@ -60,7 +56,42 @@ Production notes:
 
 ## Docker Compose (example)
 
-Create a simple `docker-compose.yml` that places nginx in front of the single container or use Traefik for automatic LetsEncrypt. Compose is not included in this repo but recommended for production or testing setups.
+Create a simple `docker-compose.yml` that places nginx in front of the single container or use Traefik for automatic LetsEncrypt. Compose is not included in this repo but recommended for production.
+
+---
+
+## AWS EC2 (GPU) deployment
+
+A dedicated guide for launching and configuring an EC2 GPU instance is included in `g4-instance-setup.md`. It walks through choosing an instance type, installing NVIDIA drivers, Docker, and the NVIDIA Container Toolkit, and basic disk management tips.
+
+Quick summary (follow `g4-instance-setup.md` for full steps):
+
+1. Launch an Ubuntu 22.04 EC2 instance (example: `g4dn.xlarge` for a single T4 GPU).
+2. Open inbound ports 22 (SSH), 80 (Streamlit UI / reverse proxy), and 8000 (vLLM - keep this private behind a proxy in production).
+3. Install the NVIDIA driver and verify `nvidia-smi` shows the GPU.
+4. Install Docker and the NVIDIA Container Toolkit so containers can access GPUs.
+5. Clone this repo on the instance, build the image, and run with `--gpus all`.
+
+Example commands on the EC2 host:
+
+```bash
+# clone and build
+git clone https://github.com/KoushikSamudrala/vllm-nexus.git
+cd vllm-nexus
+docker build -t vllm-nexus .
+
+# run (example)
+docker run --gpus all -d --restart unless-stopped \
+  -p 127.0.0.1:80:80 \
+  -e MODEL_ID=Qwen/Qwen2-1.5B-Instruct \
+  -e GPU_UTIL=0.85 \
+  -e VLLM_HOST=http://localhost:8000 \
+  vllm-nexus
+```
+
+Security note: In production, do NOT expose the vLLM API port (8000) publicly. Terminate TLS at a reverse proxy on port 443/80 and proxy requests to the container on the host network or via a private network interface.
+
+See `g4-instance-setup.md` for a step-by-step walkthrough, command snippets, and troubleshooting tips specific to AWS EC2 GPU instances.
 
 ---
 
@@ -84,6 +115,7 @@ Set these with `-e` when running the container or export them in your process ma
   - Sends streaming chat requests to `/v1/chat/completions` and renders SSE-style deltas incrementally.
   - Stores per-session chat history in Streamlit's in-memory session state.
 - requirements.txt — pinned Python dependencies for the demo (vllm, transformers, streamlit, requests, torch/xformers).
+- g4-instance-setup.md — step-by-step EC2 GPU instance setup and deployment notes for AWS (new).
 - vllm-deployment-docker.pdf — reference/deployment notes (kept for documentation).
 
 ---
@@ -137,7 +169,14 @@ Streaming flow summary:
 
 ---
 
+## Notes and known issues
+
+- entrypoint.sh: the `python3 -m vllm.entrypoints.openai.api_server` command in `entrypoint.sh` has a broken line break: the `--host 0.0.0.0` line is not escaped with a trailing backslash before the next `--dtype` option, which will cause a shell syntax/command error. You can fix it by joining the options on one line or adding backslashes at line ends. If you want, I can open a small PR to fix this in `entrypoint.sh`.
+
+---
+
 ## Contributing & license
 
 Contributions welcome. For production-readiness PRs consider:
 - docker-compose or Kubernetes manifests
+
