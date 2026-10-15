@@ -32,7 +32,7 @@ https://github.com/user-attachments/assets/f33984a6-9ea0-4e05-9e55-4f97b743ea3d
 
 ## Minimal production run (recommended)
 
-This example runs the container and places Traefik/nginx in front for TLS and auth. For a single-host quick test you can still use docker run:
+This example builds the container and exposes relevant ports for both LLM app and streamlit UI. For a single-host quick test you can still use docker run:
 
 ```bash
 # Build image
